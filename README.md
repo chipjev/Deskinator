@@ -19,7 +19,7 @@ A self-directed hardware and firmware project built to demonstrate hands-on skil
 | :--- | :--- |
 | Arduino Uno REV3 | Main microcontroller, runs real-time sensor processing and motor sequence control. |
 | H-Bridge Motor Driver Control | Drives dual independent DC wheel assemblies (supports differential steering control). |
-| Gikfun Type 130 DC Motor | High-rpm micro drive motors (2 units configuration for main wheel movement). |
+| Gikfun Type 130 DC Motor | High-rpm micro drive motors (2-unit configuration for main wheel movement). |
 | DC Fan | Built-in vacuum fan assembly dedicated to generating continuous negative suction air pressure. |
 | HC-SR04 Ultrasonic Sensor | Calculates real-time distance boundaries (3 units around perimeter for front, left, right edge scans). |
 | Adafruit APDS9960 Gesture Sensor | Reads close-range proximity and direction vectors to trigger contactless starting states. |
@@ -31,11 +31,11 @@ A self-directed hardware and firmware project built to demonstrate hands-on skil
 | Mesh Filter Screen | Keeps collected debris contained inside the removable container. |
 
 ## Power System Architecture
-12V Battery Pack (1200 mAh)
-├── Motor Driver (VM RAW Motor Power)
-└── Arduino Uno Power Line
-├── APDS9960 Gesture Sensor (3.3V Logic Rail)
-└── HC-SR04 Sensors Array (5V Logic Rail)
+12V Battery Pack (1200 mAh)  
+├── Motor Driver (VM RAW Motor Power)  
+└── Arduino Uno Power Line  
+&emsp;&emsp;├── APDS9960 Gesture Sensor (3.3V Logic Rail)  
+&emsp;&emsp;└── HC-SR04 Sensors Array (5V Logic Rail)
 
 9V Alkaline Battery (720 mAh)
 └── DC Vacuum Suction Fan Motor
@@ -45,21 +45,22 @@ A self-directed hardware and firmware project built to demonstrate hands-on skil
 - **Non-Contact Start Sequence** — Safeguards the machine's initial layout trajectory by completely removing physical click pressure.
 - **H-Bridge Differential Steering** — Allows localized directional pivots and quick reversing behaviors upon arriving at sudden platform borders.
 
-## Collision Avoidance Logic
-Robot Navigates Forward
-↓
-Arduino Reads HC-SR04 Array (Front Depth)
-↓
-Front Distance > 40cm? (Drop-off/Edge Encountered)
-YES → Back up (4s) → Stop → Scan Side Panels
-NO  → Continue forward progression loop
-↓
-Check Right Distance > 40cm?
-YES (Clear) → Spin Right Pivot (600ms)
-NO  (Edge)  → Check Left Distance > 40cm?
-↓
-├── Left Clear → Spin Left Pivot (600ms)
-└── Left Edge  → Trapped All Sides! Execute Full 180° U-Turn
+## Edge Detection Logic
+Robot Navigates Forward  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;↓  
+Arduino Reads HC-SR04 Array (Front Depth)  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;↓  
+Front Edge Detected > 40cm? (Drop-off/Edge Encountered)  
+&emsp;&emsp;&emsp;&emsp;&emsp;├── YES → Back up (4s) → Stop → Scan Side Panels  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;↓  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; Right Edge Detected > 40cm? (Drop-off/Edge Encountered)  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├── YES → Scan Left Edge  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;↓  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;Left Edge Detected > 40cm? (Drop-off/Edge Encountered)  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;├── YES → Back up (4s) → Stop → Scan Side Panels → Repeat Cycle  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;└── NO → Rotate 180 degrees to the left -> Repeat Cycle  
+&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;└── NO → Rotate 180 degrees to the right -> Repeat Cycle  
+&emsp;&emsp;&emsp;&emsp;&emsp;└── NO → Move Forward until front edge is detected
 
 ## Wiring
 
@@ -94,6 +95,3 @@ NO  (Edge)  → Check Left Distance > 40cm?
 - **LED Completely Off:** Device is in standby idle state. Wave hand **LEFT → RIGHT** over the gesture node to activate.
 - **LED Solidly Illuminating:** Active cleaning session running. The micro-timer tracking is actively executing down from its 2-minute limit threshold.
 - **LED Actively Blinking:** Cleaning cycle completed successfully. The system has disengaged running wheels and vacuum motors safely.
-
-## Edge Detection Logic
-
