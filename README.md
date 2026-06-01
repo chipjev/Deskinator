@@ -2,10 +2,6 @@
 
 A self-directed hardware and firmware project built to demonstrate hands-on skills in power systems, embedded programming, and autonomous robotics navigation. The robot operates completely autonomously on an elevated desk, lifting debris via a custom vacuum system, and uses real-time distance calculations to avoid dropping off table edges.
 
-## Demo
-
-<video src="path/to/your/robot_demo.mp4" controls width="100%"></video>
-
 ## Features
 - **Touchless Activation** — Uses an APDS-9960 gesture sensor to read hand waves, initializing the robot without causing accidental displacement on startup.
 - **Autonomous Edge Avoidance** — Built-in ultrasonic arrays monitor depth continuously, prioritizing front-to-side logic blocks to safely alter course.
@@ -93,5 +89,5 @@ Front Edge Detected > 40cm? (Drop-off/Edge Encountered)
 
 ### Operational Status Codes (LED Indicators)
 - **LED Completely Off:** Device is in standby idle state. Wave hand **LEFT → RIGHT** over the gesture node to activate.
-- **LED Solidly Illuminating:** Active cleaning session running. The micro-timer tracking is actively executing down from its 2-minute limit threshold.
+- **LED Solidly Illuminating:** Active cleaning session running. The micro-timer is actively executing down from its 2-minute limit threshold.
 - **LED Actively Blinking:** Cleaning cycle completed successfully. The system has disengaged running wheels and vacuum motors safely.
