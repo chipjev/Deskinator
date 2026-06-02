@@ -1,15 +1,14 @@
-// ============================================================
 //  Cleaning Robot — Arduino UNO
 //  APDS-9960 gesture sensor — wave LEFT→RIGHT to start
 //  Priority Edge Logic: Front → Right → Left
 //  LED OFF = idle | LED ON = cleaning | LED BLINK = done
-// ============================================================
 
-// ── Libraries ────────────────────────────────────────────────
+
+// Libraries
 #include <Wire.h>
 #include <SparkFun_APDS9960.h>
 
-// ── Pin definitions ──────────────────────────────────────────
+// Pin definitions
 #define LED_PIN        13
 
 #define TRIG_FRONT     A3
@@ -26,14 +25,14 @@
 #define ENA            10
 #define ENB            3
 
-// ── Tunable constants ────────────────────────────────────────
+// Tunable constants
 #define MOTOR_SPEED       180
 #define TURN_SPEED        160
 #define EDGE_DIST_CM      40
 #define CLEAN_DURATION_MS 120000UL
 #define BLINK_INTERVAL    300
 
-// ── Globals ──────────────────────────────────────────────────
+// Globals
 bool running          = false;
 bool blinking         = false;
 bool ledState         = false;
@@ -42,7 +41,7 @@ unsigned long lastBlink  = 0;
 
 SparkFun_APDS9960 apds;
 
-// ── Setup ────────────────────────────────────────────────────
+// Setup
 void setup() {
   Serial.begin(9600);
   randomSeed(analogRead(A5));
@@ -62,7 +61,7 @@ void setup() {
   pinMode(TRIG_LEFT,  OUTPUT); pinMode(ECHO_LEFT,  INPUT);
   pinMode(TRIG_RIGHT, OUTPUT); pinMode(ECHO_RIGHT, INPUT);
 
-  // ── Gesture sensor init ──────────────────────────────────
+  // Gesture sensor init
   Wire.begin();
   if (!apds.init()) {
     Serial.println("APDS-9960 init failed! Check wiring.");
@@ -82,10 +81,10 @@ void setup() {
   Serial.println("Wave LEFT → RIGHT to start cleaning.");
 }
 
-// ── Main loop ────────────────────────────────────────────────
+// Main loop
 void loop() {
 
-  // ── STATE 1: Blinking (cycle complete) ──────────────────
+  // STATE 1: Blinking (cycle complete)
   if (blinking) {
     // Non-blocking blink
     if (millis() - lastBlink >= BLINK_INTERVAL) {
@@ -107,7 +106,7 @@ void loop() {
     return;
   }
 
-  // ── STATE 2: Idle (waiting for gesture) ─────────────────
+  // STATE 2: Idle (waiting for gesture)
   if (!running) {
     if (apds.isGestureAvailable()) {
       int gesture = apds.readGesture();
@@ -122,7 +121,7 @@ void loop() {
     return;
   }
 
-  // ── STATE 3: Cleaning ────────────────────────────────────
+  // STATE 3: Cleaning
 
   // Check if 2 minute cycle is done
   if (millis() - startTime >= CLEAN_DURATION_MS) {
@@ -130,7 +129,7 @@ void loop() {
     return;
   }
 
-  // ── STEP 1: Read front sensor ────────────────────────────
+  // STEP 1: Read front sensor
   long distFront = getDistance(TRIG_FRONT, ECHO_FRONT);
   bool edgeFront = (distFront > EDGE_DIST_CM);
 
@@ -143,7 +142,7 @@ void loop() {
     return;
   }
 
-  // ── STEP 2: Front edge → back up, check RIGHT ───────────
+  // STEP 2: Front edge → back up, check RIGHT
   motorsBackward();
   delay(4000);
   motorsStop();
@@ -161,7 +160,7 @@ void loop() {
     return;
   }
 
-  // ── STEP 3: Right also edge → check LEFT ────────────────
+  // STEP 3: Right also edge → check LEFT
   long distLeft = getDistance(TRIG_LEFT, ECHO_LEFT);
   bool edgeLeft = (distLeft > EDGE_DIST_CM);
 
@@ -178,7 +177,7 @@ void loop() {
   delay(50);
 }
 
-// ── State helpers ────────────────────────────────────────────
+// State helpers
 void startCleaning() {
   running   = true;
   startTime = millis();
@@ -195,7 +194,7 @@ void finishCleaning() {
   Serial.println("Wave LEFT → RIGHT to start again.");
 }
 
-// ── Distance measurement (HC-SR04) ───────────────────────────
+// Distance measurement (HC-SR04)
 long getDistance(int trigPin, int echoPin) {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -208,7 +207,7 @@ long getDistance(int trigPin, int echoPin) {
   return duration * 0.034 / 2;
 }
 
-// ── Motor control ────────────────────────────────────────────
+// Motor control
 void motorsForward() {
   analogWrite(ENA, MOTOR_SPEED);
   analogWrite(ENB, MOTOR_SPEED);
@@ -248,7 +247,7 @@ void turnLeft(int durationMs) {
   motorsForward();
 }
 
-// ── LED blink (blocking — used nowhere now, kept for reference) ──
+// LED blink (blocking — used nowhere now, kept for reference)
 void blinkLED(int times, int intervalMs) {
   for (int i = 0; i < times; i++) {
     digitalWrite(LED_PIN, HIGH);
