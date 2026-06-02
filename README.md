@@ -1,6 +1,8 @@
 # Autonomous Desktop-Cleaning Robot with Touchless Start and Edge Detection
 
-A self-directed hardware and firmware project built to demonstrate hands-on skills in power systems, embedded programming, and autonomous robotics navigation. The robot operates completely autonomously on an elevated desk, lifting debris via a custom vacuum system, and uses real-time distance calculations to avoid dropping off table edges.
+A self-directed hardware and firmware project built to demonstrate hands-on skills in power systems, embedded programming, and autonomous robotics navigation. The robot operates completely autonomously on an elevated desk, lifting debris via a custom vacuum system, and uses real-time distance calculations to avoid dropping off table edges. 
+
+Final Report: [Clickable Text]()
 
 ## Features
 - **Touchless Activation** — Uses an APDS-9960 gesture sensor to read hand waves, initializing the robot without causing accidental displacement on startup.
