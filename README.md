@@ -86,12 +86,14 @@ Front Edge Detected > 40cm? (Drop-off/Edge Encountered)
 | **A4 (SDA)** | APDS-9960 Gesture Sensor Serial Data Interconnect |
 | **A5 (SCL)** | APDS-9960 Gesture Sensor Serial Clock Interconnect |
 
+### Operational Status Codes (LED Indicators)
+- **LED Completely Off:** Device is in standby idle state. Wave hand **LEFT → RIGHT** over the gesture node to activate.
+- **LED Solidly Illuminating:** Active cleaning session running. The micro-timer is actively executing down from its 2-minute limit threshold.
+- **LED Actively Blinking:** Cleaning cycle completed successfully. The system has disengaged running wheels and vacuum motors safely.
+
 ## Software
 - **Language:** C++ (Arduino Sketch Architecture)
 - **Framework:** Bare-metal polling loop with asynchronous, non-blocking time intervals.
 - **Key Libraries:** `Wire.h`, `SparkFun_APDS9960.h`
 
-### Operational Status Codes (LED Indicators)
-- **LED Completely Off:** Device is in standby idle state. Wave hand **LEFT → RIGHT** over the gesture node to activate.
-- **LED Solidly Illuminating:** Active cleaning session running. The micro-timer is actively executing down from its 2-minute limit threshold.
-- **LED Actively Blinking:** Cleaning cycle completed successfully. The system has disengaged running wheels and vacuum motors safely.
+
