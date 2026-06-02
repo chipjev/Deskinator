@@ -2,8 +2,8 @@
 
 A self-directed hardware and firmware project built to demonstrate hands-on skills in power systems, embedded programming, and autonomous robotics navigation. The robot operates completely autonomously on an elevated desk, lifting debris via a custom vacuum system, and uses real-time distance calculations to avoid dropping off table edges. 
 
-**Technical Report:** [Deskinator Report](EK210_-_Final_Report.pdf)  
-**Deskinator Code:** [Deskinator Code](Deskinator_code.ino)
+- **Technical Report:** [Deskinator Report](EK210_-_Final_Report.pdf)  
+- **Deskinator Code:** [Deskinator Code](Deskinator_code.ino)
 
 ## Features
 - **Touchless Activation** — Uses an APDS-9960 gesture sensor to read hand waves, initializing the robot without causing accidental displacement on startup.
