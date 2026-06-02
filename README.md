@@ -10,6 +10,7 @@ A self-directed hardware and firmware project built to demonstrate hands-on skil
 - **Autonomous Edge Avoidance** — Built-in ultrasonic arrays monitor depth continuously, prioritizing front-to-side logic blocks to safely alter course.
 - **Dual Power Rails** — Motor load power and sensitive microcontroller logic power are isolated from one another to filter voltage drops and electrical noise.
 - **Custom Cleaning Core** — Operates a dedicated internal vacuum suction motor funneling particles into an onboard removable debris compartment.
+- **Spatial Self-Evaluation** — Continuously analyzes real-time positioning metrics against target boundaries to autonomously identify and resolve missed geographic areas.
 
 ## Hardware
 
